@@ -5,3 +5,10 @@
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
   }
+
+  .shapesquare {
+    width: 30px;
+    height: 30px;
+    background-color: orange;
+  }
+  
