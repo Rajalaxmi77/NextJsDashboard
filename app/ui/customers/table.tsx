@@ -5,6 +5,7 @@ import {
   CustomersTableType,
   FormattedCustomersTable,
 } from '@/app/lib/definitions';
+import { DeleteCustomer, UpdateCustomer } from '../invoices/buttons';
 
 export default async function CustomersTable({
   customers,
@@ -12,11 +13,7 @@ export default async function CustomersTable({
   customers: FormattedCustomersTable[];
 }) {
   return (
-    <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
-        Customers
-      </h1>
-      <Search placeholder="Search customers..." />
+    <div className="w-full">     
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
@@ -72,13 +69,16 @@ export default async function CustomersTable({
                       Email
                     </th>
                     <th scope="col" className="px-3 py-5 font-medium">
-                      Total Invoices
+                      Image
                     </th>
                     <th scope="col" className="px-3 py-5 font-medium">
-                      Total Pending
+                      Date
                     </th>
-                    <th scope="col" className="px-4 py-5 font-medium">
-                      Total Paid
+                    <th
+                      scope="col"
+                      className="relative pb-4 pl-3 pr-6 pt-2 sm:pr-6 text-right"
+                    >
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -86,36 +86,36 @@ export default async function CustomersTable({
                 <tbody className="divide-y divide-gray-200 text-gray-900">
                   {customers.map((customer) => (
                     <tr key={customer.id} className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={customer.image_url}
-                            className="rounded-full"
-                            alt={`${customer.name}'s profile picture`}
-                            width={28}
-                            height={28}
-                          />
-                          <p>{customer.name}</p>
-                        </div>
+                      <td className="whitespace-nowrap bg-white px-4 py-5 sm:pl-6">
+                        {customer.name}
                       </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                      <td className="whitespace-nowrap bg-white px-4 py-5">
                         {customer.email}
                       </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_invoices}
+                      <td className="whitespace-nowrap bg-white px-4 py-5">
+                        <Image
+                          src={customer.image_url}
+                          className="rounded-full"
+                          alt={`${customer.name}'s profile picture`}
+                          width={32}
+                          height={32}
+                        />
                       </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_pending}
+                      <td className="whitespace-nowrap bg-white px-4 py-5">
+                        {/* Replace with real date field from DB if you have one */}
+                        {new Date().toLocaleDateString()}
                       </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {customer.total_paid}
-                      </td>
+                      <td className="px-3 py-5 text-right flex gap-2 justify-end">
+                      <UpdateCustomer id={customer.id} />
+                      <DeleteCustomer id={customer.id} />
+                    </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
             </div>
-          </div>
+          </div> 
         </div>
       </div>
     </div>

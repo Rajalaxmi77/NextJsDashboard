@@ -216,3 +216,102 @@ export function InvoicesTableSkeleton() {
     </div>
   );
 }
+
+export function CustomersTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+          {/* Mobile skeleton (stacked cards) */}
+          <div className="md:hidden">
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+          </div>
+
+          {/* Desktop skeleton (table view) */}
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                  Name
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Email
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Image
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Date
+                </th>
+                <th
+                  scope="col"
+                  className="relative pb-4 pl-3 pr-6 pt-2 sm:pr-6 text-right"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <CustomerRowSkeleton />
+              <CustomerRowSkeleton />
+              <CustomerRowSkeleton />
+              <CustomerRowSkeleton />
+              <CustomerRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Row skeleton for desktop */
+function CustomerRowSkeleton() {
+  return (
+    <tr className="animate-pulse border-b border-gray-200">
+      <td className="px-4 py-4 sm:pl-6">
+        <div className="h-4 w-32 rounded bg-gray-200" />
+      </td>
+      <td className="px-3 py-4">
+        <div className="h-4 w-40 rounded bg-gray-200" />
+      </td>
+      <td className="px-3 py-4">
+        <div className="h-10 w-10 rounded-full bg-gray-200" />
+      </td>
+      <td className="px-3 py-4">
+        <div className="h-4 w-24 rounded bg-gray-200" />
+      </td>
+      <td className="px-3 py-4 text-right flex gap-2 justify-end">
+        <div className="h-8 w-8 rounded bg-gray-200" />
+        <div className="h-8 w-8 rounded bg-gray-200" />
+      </td>
+    </tr>
+  );
+}
+
+/* Mobile skeleton card */
+function CustomerMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4 animate-pulse">
+      <div className="flex items-center gap-4">
+        <div className="h-12 w-12 rounded-full bg-gray-200" />
+        <div className="flex-1">
+          <div className="h-4 w-32 mb-2 rounded bg-gray-200" />
+          <div className="h-4 w-48 rounded bg-gray-200" />
+        </div>
+      </div>
+      <div className="mt-4 flex justify-between">
+        <div className="h-4 w-24 rounded bg-gray-200" />
+        <div className="flex gap-2">
+          <div className="h-8 w-8 rounded bg-gray-200" />
+          <div className="h-8 w-8 rounded bg-gray-200" />
+        </div>
+      </div>
+    </div>
+  );
+}
+

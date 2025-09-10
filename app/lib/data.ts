@@ -2,6 +2,7 @@ import postgres from 'postgres';
 import {
   CustomerField,
   CustomersTableType,
+  FormattedCustomersTable,
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
@@ -167,20 +168,52 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+// export async function fetchCustomers() {
+//   try {
+//     const customers = await sql<CustomerField[]>`
+//       SELECT
+//         id,
+//         name
+//       FROM customers
+//       ORDER BY name ASC
+//     `;
+
+//     return customers;
+//   } catch (err) {
+//     console.error('Database Error:', err);
+//     throw new Error('Failed to fetch all customers.');
+//   }
+// }
+
 export async function fetchCustomers() {
   try {
-    const customers = await sql<CustomerField[]>`
-      SELECT
-        id,
-        name
+    const rows = await sql<{
+      id: string;
+      name: string;
+      email: string;
+      image_url: string;
+    }[]>`
+      SELECT id, name, email, image_url
       FROM customers
       ORDER BY name ASC
     `;
 
+    // Add default values for invoices
+    const customers: FormattedCustomersTable[] = rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      image_url: row.image_url,
+      total_invoices: 0,               // number is correct
+      total_pending: '0',              // convert to string
+      total_paid: '0',                 // convert to string
+    }));
+    
+
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
+    throw new Error('Failed to fetch customers.');
   }
 }
 
@@ -214,5 +247,36 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+// Fetch a single customer by id
+// export async function fetchCustomerById(id: string) {
+//   try {
+//     const customer = await sql`
+//       SELECT id, name, email, image_url
+//       FROM customers
+//       WHERE id = ${id};
+//     `;
+//     // @vercel/postgres returns an array, not { rows }
+//     return customer[0];
+//   } catch (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch customer.');
+//   }
+// }
+
+export async function fetchCustomerById(id: string): Promise<CustomerField> {
+  try {
+    const customer = await sql<CustomerField[]>`
+      SELECT id, name, email, image_url
+      FROM customers
+      WHERE id = ${id};
+    `;
+    if (!customer[0]) throw new Error('Customer not found');
+    return customer[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch customer.');
   }
 }
